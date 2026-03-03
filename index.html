@@ -32,20 +32,22 @@
     const tabsData = {
       "APPLIANCES": [
         { name: "Rice Cooker", img: "https://www.haegergroup.com/wp-content/uploads/RC-18L.001A_1-1.jpg" },
-        { name: "Electric Kettle", img: "https://media-v4.edamama.ph/products/1_1720441969578.jpg" }
-        // add the rest here...
+        { name: "Electric Kettle", img: "https://media-v4.edamama.ph/products/1_1720441969578.jpg" },
+        { name: "Kettle", img: "https://zbga.shopsuki.ph/cdn/shop/files/masflex-stainless-steel-whistling-kettle-3.0L_1024x.png?v=1713234628" },
+        { name: "Blender", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgxfbI7OC-vISlN6hPPeqfU_cEHK_4WCOnkQ&s" }
+        // add the rest of appliances...
       ],
       "KITCHEN ESSENTIALS": [
         { name: "Plates", img: "https://m.media-amazon.com/images/I/71K6TzFzn4L._AC_SL1000__.jpg" }
-        // add the rest here...
+        // add the rest...
       ],
       "HOME & LIVING": [
         { name: "Throw Pillow", img: "https://smhome.ph/cdn/shop/files/TEXTURED_20_28RECTANGLES_29_20THROW_20PILLOW_20GREY_20-_2010434835-2.jpg?v=1771041144" }
-        // add the rest here...
+        // add the rest...
       ],
       "OTHERS": [
         { name: "Goods", img: "https://katanamrp.com/wp-content/uploads/2022/11/consumer-goods-min.jpg" }
-        // add the rest here...
+        // add the rest...
       ]
     };
 
@@ -55,7 +57,7 @@
     };
 
     const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSf8VULMMNmav4QIJ4szyiDgBTyrv2rpWstADzBJstloolva1A/viewform?usp=publish-editor";
-    const webAppURL = "https://script.google.com/macros/s/AKfycbxuqISELQboJOyEoOhFzWDw-R8NDMMx4gLt-7QR3YAeqvjG9NVzYZqyysfnDZnj_kiE/exec";
+    const webAppURL = "https://script.google.com/macros/s/AKfycbwbXRHhR5WSqrUhD_3Llb6u91D7eS1gdsxNbYQlt9AnhwMl9T0vpRU68wAJE5a8Wzn_/exec";
 
     const tabsDiv = document.getElementById("tabs");
     const giftsDiv = document.getElementById("gifts");
@@ -74,7 +76,7 @@
     fetch(webAppURL)
       .then(res => res.json())
       .then(data => {
-        claimedGifts = data.map(item => item.giftName || item); // support objects or strings
+        claimedGifts = data.map(item => item.giftName || item); // support object format
         showTab(Object.keys(tabsData)[0]);
       });
 
