@@ -105,34 +105,123 @@ color:#e6007e;
 }
 </style>
 
-<script>
-let counters = {};
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.15.0/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/10.15.0/firebase-firestore.js";
 
+// ----------------------
+// Your Firebase config
+// ----------------------
+const firebaseConfig = {
+  apiKey: "AIzaSyDEdTJpJHN80Zbp6aw-yQpQpRyOtoZ4PM4",
+  authDomain: "gift-selection-fa5a1.firebaseapp.com",
+  projectId: "gift-selection-fa5a1",
+  storageBucket: "gift-selection-fa5a1.appspot.com",
+  messagingSenderId: "922467707552",
+  appId: "1:922467707552:web:f6ceaef51e3d874baa37c5"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Scroll to section
 function scrollToSection(id){
-document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
 }
 
+// ----------------------
+// Gift selection function
+// ----------------------
 function chooseGift(btn, giftName, unlimited=false){
-let nickname = prompt("Enter your nickname:");
-if(!nickname) return;
+  let nickname = prompt("Enter your nickname:");
+  if(!nickname) return;
 
-if(confirm("Are you sure you want " + giftName + " as your wedding gift?")){
-if(unlimited){
-if(!counters[giftName]) counters[giftName]=0;
-counters[giftName]++;
-btn.parentElement.querySelector(".counter").innerText = counters[giftName];
-}else{
-btn.classList.add("disabled");
+  if(confirm("Are you sure you want " + giftName + " as your wedding gift?")){
+    const giftRef = doc(db, "gifts", giftName.replace(/[.,]/g,'')); // remove commas/dots for Firestore
+    
+    if(unlimited){
+      // Increment count
+      updateDoc(giftRef, { count: increment(1) });
+    } else {
+      // Set taken = true
+      updateDoc(giftRef, { taken: true });
+    }
+
+    alert("Thank you, " + nickname + " 💖");
+  }
 }
-alert("Thank you, " + nickname + " 💖");
+
+// ----------------------
+// Initialize gift buttons & live updates
+// ----------------------
+function createGifts(){
+  const data = {
+    appliances: [
+      ["Electric Iron","https://shop.union.ph/cdn/shop/products/UGFI-300-qtr-1_1200x1200.jpg?v=1688537291", false]
+    ],
+    kitchen: [
+      ["Cups Mugs","https://m.media-amazon.com/images/I/61sXTBE4bFL.jpg", false],
+      ["Cooking Pots Pans","https://images.yummy.ph/yummy/uploads/2016/04/potspans-640-v2-2.jpg", false],
+      ["Coffee Tea Set","https://cdn20.pamono.com/p/g/1/8/1816587_57j2w408bx/antique-french-porcelain-coffee-tea-set-1865-set-of-13-1.jpg", false]
+    ],
+    home: [
+      ["Photo Picture Frames","https://picturecity.ph/cdn/shop/products/ELEGANTFRAMES_ELIZABETH.jpg?v=1639967117", false],
+      ["Ironing Board","https://i.ebayimg.com/images/g/muwAAeSwrdhoz3iL/s-l1200.jpg", false]
+    ],
+    others: [
+      ["Gift Card Voucher","https://d3pyarv4eotqu4.cloudfront.net/clicktopr/images/product/WALL_CALENDAR_GIFT_VOUCHER_3_5X2_07245702202401.jpg", true]
+    ]
+  };
+
+  for(let category in data){
+    const section = document.createElement('div');
+    section.className = 'section';
+    section.id = category;
+    section.innerHTML = `<h2>${category.toUpperCase()}</h2><div class="items"></div>`;
+    document.body.appendChild(section);
+
+    const itemsDiv = section.querySelector('.items');
+
+    data[category].forEach(item=>{
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${item[1]}">
+        <h3>${item[0]}</h3>
+        <button class="mine-btn">MINE</button>
+        ${item[2] ? '<div class="counter">0</div>' : ''}
+      `;
+      itemsDiv.appendChild(card);
+
+      const btn = card.querySelector('button');
+
+      // ----------------------
+      // Real-time listener
+      // ----------------------
+      const giftRef = doc(db, "gifts", item[0].replace(/[.,]/g,''));
+
+      onSnapshot(giftRef, (docSnap)=>{
+        if(docSnap.exists()){
+          const data = docSnap.data();
+          if(item[2]){
+            card.querySelector('.counter').innerText = data.count || 0;
+          } else if(data.taken){
+            btn.classList.add('disabled');
+          }
+        }
+      });
+
+      // Button click
+      btn.addEventListener('click', ()=> chooseGift(btn, item[0], item[2]));
+    });
+  }
 }
-}
+
+createGifts();
+
 </script>
-
-</head>
-<body>
-
-<h1>WEDDING GIFTS</h1>
 
 <div class="tabs">
 <button onclick="scrollToSection('appliances')">APPLIANCES</button>
@@ -140,73 +229,6 @@ alert("Thank you, " + nickname + " 💖");
 <button onclick="scrollToSection('home')">HOME & LIVING</button>
 <button onclick="scrollToSection('others')">OTHERS</button>
 </div>
-
-<script>
-const data = {
-appliances: [
-["Rice Cooker","https://www.haegergroup.com/wp-content/uploads/RC-18L.001A_1-1.jpg"],
-["Electric Kettle","https://media-v4.edamama.ph/products/1_1720441969578.jpg"],
-["Kettle","https://zbga.shopsuki.ph/cdn/shop/files/masflex-stainless-steel-whistling-kettle-3.0L_1024x.png?v=1713234628"],
-["Blender","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgxfbI7OC-vISlN6hPPeqfU_cEHK_4WCOnkQ&s"],
-["Toaster","https://smegphilippines.com/cdn/shop/files/TSF01CRPH_2.png?v=1722823126"],
-["TV","https://s3.infra.brandquad.io/accounts-media/SHRP/DAM/origin/5ed1ddf8-4e73-11ef-a427-bea7e36404f4.jpg"],
-["REF","https://www.smappliance.com/cdn/shop/products/Fujidenzo-RDD35TLeft-10163302_800x.jpg?v=1619154244"]
-],
-
-kitchen: [
-["Plates","https://m.media-amazon.com/images/I/71K6TzFzn4L._AC_SL1000__.jpg"],
-["Spoon and Fork","https://img.lazcdn.com/g/p/167bae1a76a61c84fa475c03fa45f484.jpg_720x720q80.jpg"],
-["Bowls","https://www.hawkinsnewyork.com/cdn/shop/files/essential-dinnerware-large-bowl-group-HNY.500.10.063_80416ab5-a919-4fef-bfd1-8a4ccc7be48a.jpg?v=1727812189&width=1440"],
-["Cups / Mugs","https://m.media-amazon.com/images/I/61sXTBE4bFL.jpg"],
-["Tumblers","https://cdn.thewirecutter.com/wp-content/media/2024/04/tumblers-2048px-8243-3x2-1.jpg?auto=webp&quality=75&crop=1:1,smart&width=1024"],
-["Cooking Pots / Pans","https://images.yummy.ph/yummy/uploads/2016/04/potspans-640-v2-2.jpg"],
-["Cutting Boards","https://ecowarriorph.com/wp-content/uploads/2021/10/chopping-board-scaled.jpg"],
-["Knives","https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Cucina_012.jpg/500px-Cucina_012.jpg"],
-["Glass Food Containers","https://rampagecity.ph/cdn/shop/products/PRE_3_2048x.jpg?v=1716170789"],
-["Thermos","https://shopsuki.ph/cdn/shop/files/1234603253283_1024x.png?v=1715927748"],
-["Coffee / Tea Set","https://cdn20.pamono.com/p/g/1/8/1816587_57j2w408bx/antique-french-porcelain-coffee-tea-set-1865-set-of-13-1.jpg"]
-],
-
-home: [
-["Throw Pillow","https://smhome.ph/cdn/shop/files/TEXTURED_20_28RECTANGLES_29_20THROW_20PILLOW_20GREY_20-_2010434835-2.jpg?v=1771041144"],
-["Blanket","https://digitalcontent.api.tesco.com/v2/media/marketplace/630aed07-38ca-48f5-9a24-167340eef4a3/v5blsYUr8_TKmWrBW0qwI8edk_1317963157.jpeg?h=960&w=960"],
-["Wall Clock","https://smhome.ph/cdn/shop/files/JP_20NETWORKS_20INC_20LUCENT_20WC_C2_A0_20-_2039212829-1.jpg?v=1759809869"],
-["Photo / Picture Frames","https://picturecity.ph/cdn/shop/products/ELEGANTFRAMES_ELIZABETH.jpg?v=1639967117"],
-["Scented Candles","https://www.prosperitycandle.com/cdn/shop/products/Spa_Candles_Lifestyle_12x8_041019.jpg?v=1620912712"],
-["Bath Towels","https://www.nitori.com.ph/cdn/shop/files/777188401_700x700.jpg?v=1731915646"],
-["Mirrors","https://www.ikea.com/us/en/images/products/svansele-mirror-gold__0898210_pe813213_s5.jpg?f=s"],
-["Bags","https://blog.fashionphile.com/wp-content/uploads/2022/10/Hero-7.jpg"],
-["Lotion","https://www.suave.com/cdn/shop/files/92407772-81095471-lotion.png.rendition.767.767_1000x.png?v=1698337967"],
-["Wallet","https://img.lazcdn.com/g/p/0a31959509b4bfe40bbd2ddc7ce4a80d.jpg_720x720q80.jpg"]
-],
-
-others: [
-["Goods","https://katanamrp.com/wp-content/uploads/2022/11/consumer-goods-min.jpg"],
-["Cash Gift","https://una-acctg.com/wp-content/uploads/2022/12/Christmas-bonus-A-rewarding-guide-to-employee-bonuses-scaled.jpg"],
-["Gift Card / Voucher","https://d3pyarv4eotqu4.cloudfront.net/clicktopr/images/product/WALL_CALENDAR_GIFT_VOUCHER_3_5X2_07245702202401.jpg"]
-]
-};
-
-for(let category in data){
-document.write(`<div class="section" id="${category}">
-<h2>${category.toUpperCase()}</h2>
-<div class="items">`);
-
-data[category].forEach(item=>{
-let unlimited = category === "others";
-document.write(`
-<div class="card">
-<img src="${item[1]}">
-<h3>${item[0]}</h3>
-<button class="mine-btn" onclick="chooseGift(this,'${item[0]}',${unlimited})">MINE</button>
-${unlimited ? '<div class="counter">0</div>' : ''}
-</div>
-`);
-});
-
-document.write(`</div></div>`);
-}
-</script>
 
 </body>
 </html>
