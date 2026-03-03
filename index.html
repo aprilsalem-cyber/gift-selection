@@ -2,9 +2,51 @@
 <html>
 <head>
   <title>Gift Selection</title>
+  <style>
+    .gift {
+      display: inline-block;
+      margin: 15px;
+      text-align: center;
+    }
+    .gift img {
+      width: 150px;
+      height: 150px;
+    }
+    .claimed {
+      filter: grayscale(100%);
+      opacity: 0.6;
+    }
+  </style>
 </head>
 <body>
   <h1>🎁 Gift Selection Page</h1>
-  <p>If you can see this, your site is LIVE.</p>
+  <p>Click “Mine” to claim a gift!</p>
+
+  <div class="gift">
+    <img src="https://i5.walmartimages.com/seo/Bruntmor-Ceramic-Curved-Dinner-Plate-Set-Of-6-Colorful-Pro-Grade-Restaurant_bddfc973-c6b9-4aa8-936f-bde287af8094.246804638d26edf6fa67438b1548421b.jpeg">
+    <br>
+    <button onclick="claim(this)">Mine</button>
+  </div>
+
+  <div class="gift">
+    <img src="https://i.etsystatic.com/31902623/r/il/3aa719/5780391368/il_1080xN.5780391368_lyhp.jpg">
+    <br>
+    <button onclick="claim(this)">Mine</button>
+  </div>
+
+  <div class="gift">
+    <img src="https://i5.walmartimages.com/seo/Colourful-Plastic-Cups-Reusable-Tumblers-Cups-Unbreakable-Drinking-Cup-for-Kitchen-Camping-Party-Restaurant-Drinking-Cup-set-of-6_fb743af6-1a97-4681-a8d4-07c540b1eed6.d9543578a7a0d6c5158fbe6c082e282e.jpeg">
+    <br>
+    <button onclick="claim(this)">Mine</button>
+  </div>
+
+  <script>
+    function claim(btn) {
+      btn.innerText = "Claimed";
+      btn.disabled = true;
+      btn.parentElement.querySelector("img").classList.add("claimed");
+      window.open("YOUR_GOOGLE_FORM_LINK", "_blank");
+    }
+  </script>
 </body>
 </html>
