@@ -235,6 +235,36 @@ for(let category in data){
 }
 </script>
 
+<!-- 🔹 GIFT CARDS LOOP -->
+<script>
+const unlimitedItems = [
+  "Cups and Mugs", "Blanket", "Throw Pillow", 
+  "Bath Towels", "Bags", "Goods", 
+  "Cash Gift", "Gift Card or Voucher"
+];
+
+for (let category in data) {
+  document.write(`<div class="section" id="${category}">
+    <h2>${category.toUpperCase()}</h2>
+    <div class="items">`);
+
+  data[category].forEach(item => {
+    const unlimited = unlimitedItems.includes(item[0]); // only these items are unlimited
+
+    document.write(`
+      <div class="card">
+        <img src="${item[1]}">
+        <h3>${item[0]}</h3>
+        <button class="mine-btn" data-name="${item[0]}" onclick="chooseGift(this,'${item[0]}',${unlimited})">MINE</button>
+        ${unlimited ? '<div class="counter">0</div>' : ''}
+      </div>
+    `);
+  });
+
+  document.write(`</div></div>`);
+}
+</script>
+
 <!-- 🔹 FIREBASE + CHOOSE GIFT FUNCTION -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
@@ -258,20 +288,22 @@ const db = getDatabase(app);
 
 // 🔹 Choose gift function with nickname + confirm + thank you popup
 window.chooseGift = async function(button, name, unlimited){
-  let nickname = prompt(`Hi! What's your nickname?`);
+  const nickname = prompt(`Hi! What's your nickname?`);
   if(!nickname) return;
 
-  let confirmGift = confirm(`Are you sure you want "${name}" as your gift, ${nickname}?`);
+  const confirmGift = confirm(`Are you sure you want "${name}" as your gift, ${nickname}?`);
   if(!confirmGift) return;
 
   const giftRef = ref(db, "gifts/" + name);
 
   if(unlimited){
+    // increase counter for unlimited gifts
     onValue(giftRef, snapshot => {
       let current = snapshot.val() || 0;
       set(giftRef, current + 1);
     }, {onlyOnce:true});
 
+    // update counter below button immediately
     const counterDiv = button.nextElementSibling;
     if(counterDiv && counterDiv.classList.contains("counter")){
       counterDiv.textContent = (parseInt(counterDiv.textContent) || 0) + 1;
@@ -280,9 +312,11 @@ window.chooseGift = async function(button, name, unlimited){
     alert(`Thank you ${nickname} for choosing "${name}"!`);
 
   } else {
+    // single claim gift
     set(giftRef, true);
     button.classList.add("disabled");
     button.disabled = true;
+
     alert(`Thank you ${nickname}! You claimed "${name}"!`);
   }
 };
