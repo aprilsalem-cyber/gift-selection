@@ -282,14 +282,25 @@
 </div>
 
 <script>
-  const tabs = document.querySelectorAll('.tab');
-  const tabContents = document.querySelectorAll('.tab-content');
+  let selectedButton = null;
+let selectedGift = '';
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const tabName = tab.dataset.tab;
-      tabContents.forEach(content => {
-        content.style.display = content.id === tabName ? 'grid' : 'none';
-     
+function claimGift(button, giftName) {
+  selectedButton = button;
+  selectedGift = giftName;
+  document.getElementById('popup-text').innerText = `Are you sure you want to gift "${giftName}"?`;
+  document.getElementById('nickname').value = '';
+  document.getElementById('popup').style.display = 'flex';
+}
+
+function confirmGift() {
+  const nickname = document.getElementById('nickname').value.trim();
+  if(nickname === '') {
+    alert('Please enter your nickname!');
+    return;
+  }
+  alert(`${nickname} has claimed "${selectedGift}"!`);
+  selectedButton.classList.add('claimed');
+  selectedButton.disabled = true;
+  document.getElementById('popup').style.display = 'none';
+}
