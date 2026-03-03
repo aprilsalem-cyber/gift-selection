@@ -310,4 +310,27 @@ tabs.forEach(tab => {
 document.getElementById('appliances').classList.add('active');
 
 // Gift popup logic
-let selectedButton = null
+let selectedButton = null;
+let selectedGift = '';
+
+function claimGift(button, giftName) {
+  if(button.classList.contains('claimed')) return; // already claimed
+  selectedButton = button;
+  selectedGift = giftName;
+  document.getElementById('popup-text').innerText = `Are you sure you want to gift "${giftName}"?`;
+  document.getElementById('nickname').value = '';
+  document.getElementById('popup').style.display = 'flex';
+}
+
+function confirmGift() {
+  const nickname = document.getElementById('nickname').value.trim();
+  if(nickname === '') {
+    alert('Please enter your nickname!');
+    return;
+  }
+  alert(`${nickname} has claimed "${selectedGift}"!`);
+  selectedButton.classList.add('claimed');
+  selectedButton.disabled = true;
+  document.getElementById('popup').style.display = 'none';
+}
+</script>
