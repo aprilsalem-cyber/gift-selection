@@ -12,138 +12,82 @@
     margin: 0;
     padding: 0;
   }
-
   h1 {
     text-align: center;
-    color: #8B0000;
+    color: #b30059;
     margin-top: 30px;
     font-size: 3em;
-    text-shadow: 1px 1px 2px #fff;
+    text-shadow: 2px 2px 4px #fff;
   }
-
   .tabs {
     display: flex;
     justify-content: center;
     margin: 20px 0;
   }
-
   .tab {
     padding: 10px 20px;
     margin: 0 10px;
     cursor: pointer;
     background-color: #ffe4e1;
-    border-radius: 8px;
-    transition: 0.3s;
+    border-radius: 10px;
     font-weight: bold;
+    transition: 0.3s;
   }
-
-  .tab:hover {
-    background-color: #ffcad4;
-  }
-
-  .tab.active {
-    background-color: #ff7f7f;
-    color: white;
-  }
-
+  .tab:hover { background-color: #ffb3c6; }
+  .tab.active { background-color: #ff4d94; color: white; }
   .tab-content {
     display: none;
-    padding: 20px;
     max-width: 1200px;
     margin: auto;
     display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
+    padding: 20px;
   }
-
   .gift-card {
-    background-color: rgba(255,255,255,0.85);
-    border-radius: 10px;
+    background-color: rgba(255,255,255,0.9);
+    border-radius: 12px;
     padding: 10px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     transition: transform 0.2s;
   }
-
-  .gift-card:hover {
-    transform: scale(1.05);
-  }
-
-  .gift-card img {
-    max-width: 100%;
-    border-radius: 10px;
-  }
-
-  .gift-name {
-    margin: 10px 0;
-    font-weight: bold;
-    color: #8B0000;
-  }
-
+  .gift-card:hover { transform: scale(1.05); }
+  .gift-card img { max-width: 100%; border-radius: 10px; }
+  .gift-name { margin: 10px 0; font-weight: bold; color: #b30059; }
   .mine-button {
     padding: 8px 16px;
-    background-color: #ff4d4d;
+    background-color: #ff1a75;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
     transition: 0.3s;
   }
-
-  .mine-button:hover {
-    background-color: #ff1a1a;
-  }
-
+  .mine-button:hover { background-color: #e6006e; }
   .mine-button.claimed {
     background-color: grey;
     cursor: not-allowed;
   }
-
   .popup {
-    position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background: rgba(0,0,0,0.6);
-    display:none;
-    justify-content:center;
-    align-items:center;
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.6); display:none;
+    justify-content:center; align-items:center;
   }
-
   .popup-content {
-    background:#fff;
-    padding:20px;
-    border-radius:10px;
-    text-align:center;
-    max-width:300px;
-    width:80%;
+    background:#fff; padding:20px; border-radius:12px;
+    text-align:center; max-width:300px; width:80%;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
   }
-
   .popup-content input {
-    padding:8px;
-    width:90%;
-    margin-top:10px;
-    border-radius:5px;
-    border:1px solid #ccc;
+    padding:8px; width:90%; margin-top:10px; border-radius:5px; border:1px solid #ccc;
   }
-
   .popup-content button {
-    margin-top:15px;
-    padding:8px 16px;
-    border:none;
-    border-radius:5px;
-    background-color:#ff4d4d;
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
+    margin-top:15px; padding:8px 16px; border:none; border-radius:5px;
+    background-color:#ff1a75; color:white; font-weight:bold; cursor:pointer;
   }
-
-  .popup-content button:hover {
-    background-color:#ff1a1a;
-  }
+  .popup-content button:hover { background-color:#e6006e; }
 </style>
 </head>
 <body>
@@ -157,78 +101,195 @@
   <div class="tab" data-tab="others">OTHERS</div>
 </div>
 
+<!-- APPLIANCES -->
 <div id="appliances" class="tab-content">
-  <div class="gift-card"><img src="https://www.haegergroup.com/wp-content/uploads/RC-18L.001A_1-1.jpg"><div class="gift-name">Rice Cooker</div><button class="mine-button" onclick="claimGift(this,'Rice Cooker')">Mine</button></div>
-  <div class="gift-card"><img src="https://media-v4.edamama.ph/products/1_1720441969578.jpg"><div class="gift-name">Electric Kettle</div><button class="mine-button" onclick="claimGift(this,'Electric Kettle')">Mine</button></div>
-  <div class="gift-card"><img src="https://zbga.shopsuki.ph/cdn/shop/files/masflex-stainless-steel-whistling-kettle-3.0L_1024x.png?v=1713234628"><div class="gift-name">Kettle</div><button class="mine-button" onclick="claimGift(this,'Kettle')">Mine</button></div>
-  <div class="gift-card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgxfbI7OC-vISlN6hPPeqfU_cEHK_4WCOnkQ&s"><div class="gift-name">Blender</div><button class="mine-button" onclick="claimGift(this,'Blender')">Mine</button></div>
-  <div class="gift-card"><img src="https://smegphilippines.com/cdn/shop/files/TSF01CRPH_2.png?v=1722823126"><div class="gift-name">Toaster</div><button class="mine-button" onclick="claimGift(this,'Toaster')">Mine</button></div>
-  <div class="gift-card"><img src="https://s3.infra.brandquad.io/accounts-media/SHRP/DAM/origin/5ed1ddf8-4e73-11ef-a427-bea7e36404f4.jpg"><div class="gift-name">TV</div><button class="mine-button" onclick="claimGift(this,'TV')">Mine</button></div>
-  <div class="gift-card"><img src="https://www.smappliance.com/cdn/shop/products/Fujidenzo-RDD35TLeft-10163302_800x.jpg?v=1619154244"><div class="gift-name">REF</div><button class="mine-button" onclick="claimGift(this,'REF')">Mine</button></div>
+  <div class="gift-card">
+    <img src="https://www.haegergroup.com/wp-content/uploads/RC-18L.001A_1-1.jpg">
+    <div class="gift-name">Rice Cooker</div>
+    <button class="mine-button" onclick="claimGift(this,'Rice Cooker')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://media-v4.edamama.ph/products/1_1720441969578.jpg">
+    <div class="gift-name">Electric Kettle</div>
+    <button class="mine-button" onclick="claimGift(this,'Electric Kettle')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://zbga.shopsuki.ph/cdn/shop/files/masflex-stainless-steel-whistling-kettle-3.0L_1024x.png?v=1713234628">
+    <div class="gift-name">Kettle</div>
+    <button class="mine-button" onclick="claimGift(this,'Kettle')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgxfbI7OC-vISlN6hPPeqfU_cEHK_4WCOnkQ&s">
+    <div class="gift-name">Blender</div>
+    <button class="mine-button" onclick="claimGift(this,'Blender')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://smegphilippines.com/cdn/shop/files/TSF01CRPH_2.png?v=1722823126">
+    <div class="gift-name">Toaster</div>
+    <button class="mine-button" onclick="claimGift(this,'Toaster')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://s3.infra.brandquad.io/accounts-media/SHRP/DAM/origin/5ed1ddf8-4e73-11ef-a427-bea7e36404f4.jpg">
+    <div class="gift-name">TV</div>
+    <button class="mine-button" onclick="claimGift(this,'TV')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://www.smappliance.com/cdn/shop/products/Fujidenzo-RDD35TLeft-10163302_800x.jpg?v=1619154244">
+    <div class="gift-name">REF</div>
+    <button class="mine-button" onclick="claimGift(this,'REF')">Mine</button>
+  </div>
 </div>
 
+<!-- KITCHEN ESSENTIALS -->
 <div id="kitchen" class="tab-content">
-  <div class="gift-card"><img src="https://m.media-amazon.com/images/I/71K6TzFzn4L._AC_SL1000__.jpg"><div class="gift-name">Plates</div><button class="mine-button" onclick="claimGift(this,'Plates')">Mine</button></div>
-  <div class="gift-card"><img src="https://img.lazcdn.com/g/p/167bae1a76a61c84fa475c03fa45f484.jpg_720x720q80.jpg"><div class="gift-name">Spoon and Fork</div><button class="mine-button" onclick="claimGift(this,'Spoon and Fork')">Mine</button></div>
-  <div class="gift-card"><img src="https://www.hawkinsnewyork.com/cdn/shop/files/essential-dinnerware-large-bowl-group-HNY.500.10.063_80416ab5-a919-4fef-bfd1-8a4ccc7be48a.jpg?v=1727812189&width=1440"><div class="gift-name">Bowls</div><button class="mine-button" onclick="claimGift(this,'Bowls')">Mine</button></div>
-  <div class="gift-card"><img src="https://m.media-amazon.com/images/I/61sXTBE4bFL.jpg"><div class="gift-name">Cups / Mugs</div><button class="mine-button" onclick="claimGift(this,'Cups / Mugs')">Mine</button></div>
-  <div class="gift-card"><img src="https://cdn.thewirecutter.com/wp-content/media/2024/04/tumblers-2048px-8243-3x2-1.jpg?auto=webp&quality=75&crop=1:1,smart&width=1024"><div class="gift-name">Tumblers</div><button class="mine-button" onclick="claimGift(this,'Tumblers')">Mine</button></div>
-  <div class="gift-card"><img src="https://images.yummy.ph/yummy/uploads/2016/04/potspans-640-v2-2.jpg"><div class="gift-name">Cooking Pots / Pans</div><button class="mine-button" onclick="claimGift(this,'Cooking Pots / Pans')">Mine</button></div>
-  <div class="gift-card"><img src="https://ecowarriorph.com/wp-content/uploads/2021/10/chopping-board-scaled.jpg"><div class="gift-name">Cutting Boards</div><button class="mine-button" onclick="claimGift(this,'Cutting Boards')">Mine</button></div>
-  <div class="gift-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Cucina_012.jpg/500px-Cucina_012.jpg"><div class="gift-name">Knives</div><button class="mine-button" onclick="claimGift(this,'Knives')">Mine</button></div>
-  <div class="gift-card"><img src="https://rampagecity.ph/cdn/shop/products/PRE_3_2048x.jpg?v=1716170789"><div class="gift-name">Glass Food Containers</div><button class="mine-button" onclick="claimGift(this,'Glass Food Containers')">Mine</button></div>
-  <div class="gift-card"><img src="https://shopsuki.ph/cdn/shop/files/1234603253283_1024x.png?v=1715927748"><div class="gift-name">Thermos</div><button class="mine-button" onclick="claimGift(this,'Thermos')">Mine</button></div>
-  <div class="gift-card"><img src="https://cdn20.pamono.com/p/g/1/8/1816587_57j2w408bx/antique-french-porcelain-coffee-tea-set-1865-set-of-13-1.jpg"><div class="gift-name">Coffee / Tea Set</div><button class="mine-button" onclick="claimGift(this,'Coffee / Tea Set')">Mine</button></div>
+  <div class="gift-card">
+    <img src="https://m.media-amazon.com/images/I/71K6TzFzn4L._AC_SL1000__.jpg">
+    <div class="gift-name">Plates</div>
+    <button class="mine-button" onclick="claimGift(this,'Plates')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://img.lazcdn.com/g/p/167bae1a76a61c84fa475c03fa45f484.jpg_720x720q80.jpg">
+    <div class="gift-name">Spoon & Fork</div>
+    <button class="mine-button" onclick="claimGift(this,'Spoon & Fork')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://www.hawkinsnewyork.com/cdn/shop/files/essential-dinnerware-large-bowl-group-HNY.500.10.063_80416ab5-a919-4fef-bfd1-8a4ccc7be48a.jpg?v=1727812189&width=1440">
+    <div class="gift-name">Bowls</div>
+    <button class="mine-button" onclick="claimGift(this,'Bowls')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://m.media-amazon.com/images/I/61sXTBE4bFL.jpg">
+    <div class="gift-name">Cups / Mugs</div>
+    <button class="mine-button" onclick="claimGift(this,'Cups / Mugs')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://cdn.thewirecutter.com/wp-content/media/2024/04/tumblers-2048px-8243-3x2-1.jpg?auto=webp&quality=75&crop=1:1,smart&width=1024">
+    <div class="gift-name">Tumblers</div>
+    <button class="mine-button" onclick="claimGift(this,'Tumblers')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://images.yummy.ph/yummy/uploads/2016/04/potspans-640-v2-2.jpg">
+    <div class="gift-name">Cooking Pots / Pans</div>
+    <button class="mine-button" onclick="claimGift(this,'Cooking Pots / Pans')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://ecowarriorph.com/wp-content/uploads/2021/10/chopping-board-scaled.jpg">
+    <div class="gift-name">Cutting Boards</div>
+    <button class="mine-button" onclick="claimGift(this,'Cutting Boards')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Cucina_012.jpg/500px-Cucina_012.jpg">
+    <div class="gift-name">Knives</div>
+    <button class="mine-button" onclick="claimGift(this,'Knives')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://rampagecity.ph/cdn/shop/products/PRE_3_2048x.jpg?v=1716170789">
+    <div class="gift-name">Glass Food Containers</div>
+    <button class="mine-button" onclick="claimGift(this,'Glass Food Containers')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://shopsuki.ph/cdn/shop/files/1234603253283_1024x.png?v=1715927748">
+    <div class="gift-name">Thermos</div>
+    <button class="mine-button" onclick="claimGift(this,'Thermos')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://cdn20.pamono.com/p/g/1/8/1816587_57j2w408bx/antique-french-porcelain-coffee-tea-set-1865-set-of-13-1.jpg">
+    <div class="gift-name">Coffee / Tea Set</div>
+    <button class="mine-button" onclick="claimGift(this,'Coffee / Tea Set')">Mine</button>
+  </div>
 </div>
 
+<!-- HOME & LIVING -->
 <div id="home" class="tab-content">
-  <div class="gift-card"><img src="https://smhome.ph/cdn/shop/files/TEXTURED_20_28RECTANGLES_29_20THROW_20PILLOW_20GREY_20-_2010434835-2.jpg?v=1771041144"><div class="gift-name">Throw Pillow</div><button class="mine-button" onclick="claimGift(this,'Throw Pillow')">Mine</button></div>
-  <div class="gift-card"><img src="https://digitalcontent.api.tesco.com/v2/media/marketplace/630aed07-38ca-48f5-9a24-167340eef4a3/v5blsYUr8_TKmWrBW0qwI8edk_1317963157.jpeg?h=960&w=960"><div class="gift-name">Blanket</div><button class="mine-button" onclick="claimGift(this,'Blanket')">Mine</button></div>
-  <div class="gift-card"><img src="https://smhome.ph/cdn/shop/files/JP_20NETWORKS_20INC_20LUCENT_20WC_C2_A0_20-_2039212829-1.jpg?v=1759809869"><div class="gift-name">Wall Clock</div><button class="mine-button" onclick="claimGift(this,'Wall Clock')">Mine</button></div>
-  <div class="gift-card"><img src="https://picturecity.ph/cdn/shop/products/ELEGANTFRAMES_ELIZABETH.jpg?v=1639967117"><div class="gift-name">Photo / Picture Frames</div><button class="mine-button" onclick="claimGift(this,'Photo / Picture Frames')">Mine</button></div>
-  <div class="gift-card"><img src="https://www.prosperitycandle.com/cdn/shop/products/Spa_Candles_Lifestyle_12x8_041019.jpg?v=1620912712"><div class="gift-name">Scented Candles</div><button class="mine-button" onclick="claimGift(this,'Scented Candles')">Mine</button></div>
-  <div class="gift-card"><img src="https://www.nitori.com.ph/cdn/shop/files/777188401_700x700.jpg?v=1731915646"><div class="gift-name">Bath Towels</div><button class="mine-button" onclick="claimGift(this,'Bath Towels')">Mine</button></div>
-  <div class="gift-card"><img src="https://i5.walmartimages.com/asr/49f2872e-3e9b-44b7-a1d0-ff8201c38e9b_1.9bf2035148deb5167a53f1e81ea29555.jpeg?odnHeight=264&odnWidth=264&odnBg=FFFFFF"><div class="gift-name">Clothes</div><button class="mine-button" onclick="claimGift(this,'Clothes')">Mine</button></div>
-  <div class="gift-card"><img src="https://www.ikea.com/us/en/images/products/svansele-mirror-gold__0898210_pe813213_s5.jpg?f=s"><div class="gift-name">Mirrors</div><button class="mine-button" onclick="claimGift(this,'Mirrors')">Mine</button></div>
-  <div class="gift-card"><img src="https://blog.fashionphile.com/wp-content/uploads/2022/10/Hero-7.jpg"><div class="gift-name">Bags</div><button class="mine-button" onclick="claimGift(this,'Bags')">Mine</button></div>
-  <div class="gift-card"><img src="https://www.suave.com/cdn/shop/files/92407772-81095471-lotion.png.rendition.767.767_1000x.png?v=1698337967"><div class="gift-name">Lotion</div><button class="mine-button" onclick="claimGift(this,'Lotion')">Mine</button></div>
-  <div class="gift-card"><img src="https://img.lazcdn.com/g/p/0a31959509b4bfe40bbd2ddc7ce4a80d.jpg_720x720q80.jpg"><div class="gift-name">Wallet</div><button class="mine-button" onclick="claimGift(this,'Wallet')">Mine</button></div>
-  <div class="gift-card"><img src="https://m.media-amazon.com/images/I/61Dx4Yymv7L._AC_UY1000_.jpg"><div class="gift-name">Sandals</div><button class="mine-button" onclick="claimGift(this,'Sandals')">Mine</button></div>
+  <div class="gift-card">
+    <img src="https://smhome.ph/cdn/shop/files/TEXTURED_20_28RECTANGLES_29_20THROW_20PILLOW_20GREY_20-_2010434835-2.jpg?v=1771041144">
+    <div class="gift-name">Throw Pillow</div>
+    <button class="mine-button" onclick="claimGift(this,'Throw Pillow')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://digitalcontent.api.tesco.com/v2/media/marketplace/630aed07-38ca-48f5-9a24-167340eef4a3/v5blsYUr8_TKmWrBW0qwI8edk_1317963157.jpeg?h=960&w=960">
+    <div class="gift-name">Blanket</div>
+    <button class="mine-button" onclick="claimGift(this,'Blanket')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://smhome.ph/cdn/shop/files/JP_20NETWORKS_20INC_20LUCENT_20WC_C2_A0_20-_2039212829-1.jpg?v=1759809869">
+    <div class="gift-name">Wall Clock</div>
+    <button class="mine-button" onclick="claimGift(this,'Wall Clock')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://picturecity.ph/cdn/shop/products/ELEGANTFRAMES_ELIZABETH.jpg?v=1639967117">
+    <div class="gift-name">Photo / Picture Frames</div>
+    <button class="mine-button" onclick="claimGift(this,'Photo / Picture Frames')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://www.prosperitycandle.com/cdn/shop/products/Spa_Candles_Lifestyle_12x8_041019.jpg?v=1620912712">
+    <div class="gift-name">Scented Candles</div>
+    <button class="mine-button" onclick="claimGift(this,'Scented Candles')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://www.nitori.com.ph/cdn/shop/files/777188401_700x700.jpg?v=1731915646">
+    <div class="gift-name">Bath Towels</div>
+    <button class="mine-button" onclick="claimGift(this,'Bath Towels')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://i5.walmartimages.com/asr/49f2872e-3e9b-44b7-a1d0-ff8201c38e9b_1.9bf2035148deb5167a53f1e81ea29555.jpeg?odnHeight=264&odnWidth=264&odnBg=FFFFFF">
+    <div class="gift-name">Mirrors</div>
+    <button class="mine-button" onclick="claimGift(this,'Mirrors')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://blog.fashionphile.com/wp-content/uploads/2022/10/Hero-7.jpg">
+    <div class="gift-name">Bags</div>
+    <button class="mine-button" onclick="claimGift(this,'Bags')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://www.suave.com/cdn/shop/files/92407772-81095471-lotion.png.rendition.767.767_1000x.png?v=1698337967">
+    <div class="gift-name">Lotion</div>
+    <button class="mine-button" onclick="claimGift(this,'Lotion')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://img.lazcdn.com/g/p/0a31959509b4bfe40bbd2ddc7ce4a80d.jpg_720x720q80.jpg">
+    <div class="gift-name">Wallet</div>
+    <button class="mine-button" onclick="claimGift(this,'Wallet')">Mine</button>
+  </div>
 </div>
 
+<!-- OTHERS -->
 <div id="others" class="tab-content">
-  <div class="gift-card"><img src="https://katanamrp.com/wp-content/uploads/2022/11/consumer-goods-min.jpg"><div class="gift-name">Goods</div><button class="mine-button" onclick="claimGift(this,'Goods')">Mine</button></div>
-  <div class="gift-card"><img src="https://una-acctg.com/wp-content/uploads/2022/12/Christmas-bonus-A-rewarding-guide-to-employee-bonuses-scaled.jpg"><div class="gift-name">Cash Gift</div><button class="mine-button" onclick="claimGift(this,'Cash Gift')">Mine</button></div>
-  <div class="gift-card"><img src="https://d3pyarv4eotqu4.cloudfront.net/clicktopr/images/product/WALL_CALENDAR_GIFT_VOUCHER_3_5X2_07245702202401.jpg"><div class="gift-name">Gift Card / Voucher</div><button class="mine-button" onclick="claimGift(this,'Gift Card / Voucher')">Mine</button></div>
+  <div class="gift-card">
+    <img src="https://katanamrp.com/wp-content/uploads/2022/11/consumer-goods-min.jpg">
+    <div class="gift-name">Goods</div>
+    <button class="mine-button" onclick="claimGift(this,'Goods')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://una-acctg.com/wp-content/uploads/2022/12/Christmas-bonus-A-rewarding-guide-to-employee-bonuses-scaled.jpg">
+    <div class="gift-name">Cash Gift</div>
+    <button class="mine-button" onclick="claimGift(this,'Cash Gift')">Mine</button>
+  </div>
+  <div class="gift-card">
+    <img src="https://d3pyarv4eotqu4.cloudfront.net/clicktopr/images/product/WALL_CALENDAR_GIFT_VOUCHER_3_5X2_07245702202401.jpg">
+    <div class="gift-name">Gift Card / Voucher</div>
+    <button class="mine-button" onclick="claimGift(this,'Gift Card / Voucher')">Mine</button>
+  </div>
 </div>
 
+<!-- Popup -->
 <div class="popup" id="popup">
   <div class="popup-content">
-    <div id="popup-text">Are you sure?</div>
+    <div id="popup-text"></div>
     <input type="text" id="nickname" placeholder="Enter your nickname">
     <button onclick="confirmGift()">Confirm</button>
   </div>
 </div>
 
 <script>
-let currentButton = null;
-let currentGift = '';
+  const tabs = document.querySelectorAll('.tab');
+  const tabContents = document.querySelectorAll('.tab-content');
 
-function claimGift(button, giftName){
-  currentButton = button;
-  currentGift = giftName;
-  document.getElementById('popup-text').innerText = `Are you sure you want to claim "${giftName}"?`;
-  document.getElementById('nickname').value = '';
-  document.getElementById('popup').style.display = 'flex';
-}
-
-function confirmGift(){
-  if(document.getElementById('nickname').value.trim() === ''){
-    alert('Please enter a nickname.');
-    return;
-  }
-  currentButton.classList.add('claimed');
-  currentButton.innerText = 'Claimed';
-  currentButton.disabled = true;
-  document.getElementById('popup').style.display = 'none';
-  alert(`Gift "${currentGift}" claimed by ${document.getElementById('nickname').
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const tabName = tab.dataset.tab;
+      tabContents.forEach(content => {
+        content.style.display = content.id === tabName ? 'grid' : 'none';
+     
