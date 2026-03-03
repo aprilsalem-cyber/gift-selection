@@ -1,151 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>WEDDING GIFTS</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background-image: url('https://static.vecteezy.com/system/resources/previews/003/026/032/large_2x/bright-reflection-soft-color-background-free-photo.jpg');
-    background-size: cover;
-    margin: 0;
-    padding: 0;
-  }
-  h1 { text-align: center; margin-top: 20px; }
-  .tabs { display: flex; justify-content: center; margin-top: 20px; }
-  .tab { padding: 10px 20px; margin: 0 5px; background: #ffddcc; cursor: pointer; border-radius: 5px; }
-  .tab.active { background: #ff9999; }
-  .gift-container { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
-  .gift { margin: 10px; text-align: center; width: 180px; }
-  .gift img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; }
-  .mine-button { margin-top: 5px; cursor: pointer; }
-  .claimed img { filter: grayscale(100%); opacity: 0.6; }
-</style>
+  <title>WEDDING GIFTS</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: url('https://static.vecteezy.com/system/resources/previews/003/026/032/large_2x/bright-reflection-soft-color-background-free-photo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      text-align: center;
+    }
+    .tab {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      background: #f0f0f0;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .tab.active { background: #ccc; }
+    .gift { display: inline-block; margin: 15px; text-align: center; }
+    .gift img { width: 150px; height: 150px; display: block; margin-bottom: 5px; }
+    .gift button { border: none; background: none; cursor: pointer; }
+  </style>
 </head>
 <body>
+  <h1>🎁 Wedding Gifts</h1>
+  <div id="tabs"></div>
+  <div id="gifts"></div>
 
-<h1>🎁 Wedding Gifts</h1>
-<p style="text-align:center;">Click “Mine” to claim a gift!</p>
+  <script>
+    const tabsData = {
+      "APPLIANCES": [
+        { name: "Rice Cooker", img: "https://www.haegergroup.com/wp-content/uploads/RC-18L.001A_1-1.jpg" },
+        { name: "Electric Kettle", img: "https://media-v4.edamama.ph/products/1_1720441969578.jpg" }
+        // add the rest here...
+      ],
+      "KITCHEN ESSENTIALS": [
+        { name: "Plates", img: "https://m.media-amazon.com/images/I/71K6TzFzn4L._AC_SL1000__.jpg" }
+        // add the rest here...
+      ],
+      "HOME & LIVING": [
+        { name: "Throw Pillow", img: "https://smhome.ph/cdn/shop/files/TEXTURED_20_28RECTANGLES_29_20THROW_20PILLOW_20GREY_20-_2010434835-2.jpg?v=1771041144" }
+        // add the rest here...
+      ],
+      "OTHERS": [
+        { name: "Goods", img: "https://katanamrp.com/wp-content/uploads/2022/11/consumer-goods-min.jpg" }
+        // add the rest here...
+      ]
+    };
 
-<div class="tabs">
-  <div class="tab active" data-tab="appliances">Appliances</div>
-  <div class="tab" data-tab="kitchen">Kitchen Essentials</div>
-  <div class="tab" data-tab="home">Home & Living</div>
-  <div class="tab" data-tab="others">Others</div>
-</div>
+    const buttons = {
+      mine: "https://png.pngtree.com/png-clipart/20241216/original/pngtree-mine-red-button-png-image_17922819.png",
+      claimed: "https://previews.123rf.com/images/newdesignillustrations/newdesignillustrations1812/newdesignillustrations181209758/126711787-claim-stamp-seal-print-with-rubber-print-style-and-double-framed-rectangle-shape-stamp-is-placed-on.jpg"
+    };
 
-<div class="gift-container" id="gift-container"></div>
+    const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSf8VULMMNmav4QIJ4szyiDgBTyrv2rpWstADzBJstloolva1A/viewform?usp=publish-editor";
+    const webAppURL = "https://script.google.com/macros/s/AKfycbxuqISELQboJOyEoOhFzWDw-R8NDMMx4gLt-7QR3YAeqvjG9NVzYZqyysfnDZnj_kiE/exec";
 
-<script>
-// ==== CONFIG ==== //
-const webAppURL = "https://script.google.com/macros/s/AKfycbxuqISELQboJOyEoOhFzWDw-R8NDMMx4gLt-7QR3YAeqvjG9NVzYZqyysfnDZnj_kiE/exec";
-const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSf8VULMMNmav4QIJ4szyiDgBTyrv2rpWstADzBJstloolva1A/viewform?usp=publish-editor";
-const mineButtonImg = "https://png.pngtree.com/png-clipart/20241216/original/pngtree-mine-red-button-png-image_17922819.png";
+    const tabsDiv = document.getElementById("tabs");
+    const giftsDiv = document.getElementById("gifts");
+    let claimedGifts = [];
 
-const gifts = {
-  appliances: [
-    { name: "Rice Cooker", img: "https://www.haegergroup.com/wp-content/uploads/RC-18L.001A_1-1.jpg" },
-    { name: "Electric Kettle", img: "https://media-v4.edamama.ph/products/1_1720441969578.jpg" },
-    { name: "Kettle", img: "https://zbga.shopsuki.ph/cdn/shop/files/masflex-stainless-steel-whistling-kettle-3.0L_1024x.png?v=1713234628" },
-    { name: "Blender", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgxfbI7OC-vISlN6hPPeqfU_cEHK_4WCOnkQ&s" },
-    { name: "Toaster", img: "https://smegphilippines.com/cdn/shop/files/TSF01CRPH_2.png?v=1722823126" },
-    { name: "TV", img: "https://s3.infra.brandquad.io/accounts-media/SHRP/DAM/origin/5ed1ddf8-4e73-11ef-a427-bea7e36404f4.jpg" },
-    { name: "REF", img: "https://www.smappliance.com/cdn/shop/products/Fujidenzo-RDD35TLeft-10163302_800x.jpg?v=1619154244" }
-  ],
-  kitchen: [
-    { name: "Plates", img: "https://m.media-amazon.com/images/I/71K6TzFzn4L._AC_SL1000__.jpg" },
-    { name: "Spoon and Fork", img: "https://img.lazcdn.com/g/p/167bae1a76a61c84fa475c03fa45f484.jpg_720x720q80.jpg" },
-    { name: "Bowls", img: "https://www.hawkinsnewyork.com/cdn/shop/files/essential-dinnerware-large-bowl-group-HNY.500.10.063_80416ab5-a919-4fef-bfd1-8a4ccc7be48a.jpg?v=1727812189&width=1440" },
-    { name: "Cups / Mugs", img: "https://m.media-amazon.com/images/I/61sXTBE4bFL.jpg" },
-    { name: "Tumblers", img: "https://cdn.thewirecutter.com/wp-content/media/2024/04/tumblers-2048px-8243-3x2-1.jpg?auto=webp&quality=75&crop=1:1,smart&width=1024" },
-    { name: "Cooking Pots / Pans", img: "https://images.yummy.ph/yummy/uploads/2016/04/potspans-640-v2-2.jpg" },
-    { name: "Cutting Boards", img: "https://ecowarriorph.com/wp-content/uploads/2021/10/chopping-board-scaled.jpg" },
-    { name: "Knives", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Cucina_012.jpg/500px-Cucina_012.jpg" },
-    { name: "Glass Food Containers", img: "https://rampagecity.ph/cdn/shop/products/PRE_3_2048x.jpg?v=1716170789" },
-    { name: "Thermos", img: "https://shopsuki.ph/cdn/shop/files/1234603253283_1024x.png?v=1715927748" },
-    { name: "Coffee / Tea Set", img: "https://cdn20.pamono.com/p/g/1/8/1816587_57j2w408bx/antique-french-porcelain-coffee-tea-set-1865-set-of-13-1.jpg" }
-  ],
-  home: [
-    { name: "Throw Pillow", img: "https://smhome.ph/cdn/shop/files/TEXTURED_20_28RECTANGLES_29_20THROW_20PILLOW_20GREY_20-_2010434835-2.jpg?v=1771041144" },
-    { name: "Blanket", img: "https://digitalcontent.api.tesco.com/v2/media/marketplace/630aed07-38ca-48f5-9a24-167340eef4a3/v5blsYUr8_TKmWrBW0qwI8edk_1317963157.jpeg?h=960&w=960" },
-    { name: "Wall Clock", img: "https://smhome.ph/cdn/shop/files/JP_20NETWORKS_20INC_20LUCENT_20WC_C2_A0_20-_2039212829-1.jpg?v=1759809869" },
-    { name: "Photo / Picture Frames", img: "https://picturecity.ph/cdn/shop/products/ELEGANTFRAMES_ELIZABETH.jpg?v=1639967117" },
-    { name: "Scented Candles", img: "https://www.prosperitycandle.com/cdn/shop/products/Spa_Candles_Lifestyle_12x8_041019.jpg?v=1620912712" },
-    { name: "Bath Towels", img: "https://www.nitori.com.ph/cdn/shop/files/777188401_700x700.jpg?v=1731915646" },
-    { name: "Clothes", img: "https://i5.walmartimages.com/asr/49f2872e-3e9b-44b7-a1d0-ff8201c38e9b_1.9bf2035148deb5167a53f1e81ea29555.jpeg?odnHeight=264&odnWidth=264&odnBg=FFFFFF" },
-    { name: "Mirrors", img: "https://www.ikea.com/us/en/images/products/svansele-mirror-gold__0898210_pe813213_s5.jpg?f=s" },
-    { name: "Bags", img: "https://blog.fashionphile.com/wp-content/uploads/2022/10/Hero-7.jpg" },
-    { name: "Lotion", img: "https://www.suave.com/cdn/shop/files/92407772-81095471-lotion.png.rendition.767.767_1000x.png?v=1698337967" },
-    { name: "Wallet", img: "https://img.lazcdn.com/g/p/0a31959509b4bfe40bbd2ddc7ce4a80d.jpg_720x720q80.jpg" },
-    { name: "Sandals", img: "https://m.media-amazon.com/images/I/61Dx4Yymv7L._AC_UY1000_.jpg" }
-  ],
-  others: [
-    { name: "Goods", img: "https://katanamrp.com/wp-content/uploads/2022/11/consumer-goods-min.jpg" },
-    { name: "Cash Gift", img: "https://una-acctg.com/wp-content/uploads/2022/12/Christmas-bonus-A-rewarding-guide-to-employee-bonuses-scaled.jpg" },
-    { name: "Gift Card / Voucher", img: "https://d3pyarv4eotqu4.cloudfront.net/clicktopr/images/product/WALL_CALENDAR_GIFT_VOUCHER_3_5X2_07245702202401.jpg" }
-  ]
-};
+    // create tabs
+    Object.keys(tabsData).forEach((tabName, idx) => {
+      const tab = document.createElement("div");
+      tab.className = "tab" + (idx===0?" active":"");
+      tab.textContent = tabName;
+      tab.onclick = () => { showTab(tabName); };
+      tabsDiv.appendChild(tab);
+    });
 
-// ==== TAB SWITCHING ==== //
-const tabs = document.querySelectorAll('.tab');
-const container = document.getElementById('gift-container');
-let currentTab = 'appliances';
+    // fetch claimed gifts from Web App
+    fetch(webAppURL)
+      .then(res => res.json())
+      .then(data => {
+        claimedGifts = data.map(item => item.giftName || item); // support objects or strings
+        showTab(Object.keys(tabsData)[0]);
+      });
 
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    currentTab = tab.dataset.tab;
-    renderGifts();
-  });
-});
+    function showTab(tabName) {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      [...tabsDiv.children].forEach(t => { if(t.textContent===tabName) t.classList.add("active"); });
 
-// ==== FETCH CLAIMED GIFTS ==== //
-let claimedGifts = [];
-async function fetchClaimedGifts() {
-  try {
-    const response = await fetch(webAppURL);
-    const data = await response.json();
-    claimedGifts = data.map(item => item.giftName);
-    renderGifts();
-  } catch (err) {
-    console.error('Error fetching claimed gifts:', err);
-  }
-}
+      giftsDiv.innerHTML = "";
+      tabsData[tabName].forEach(gift => {
+        const giftDiv = document.createElement("div");
+        giftDiv.className = "gift";
 
-// ==== RENDER GIFTS ==== //
-function renderGifts() {
-  container.innerHTML = '';
-  gifts[currentTab].forEach(g => {
-    const div = document.createElement('div');
-    div.className = 'gift';
-    if (claimedGifts.includes(g.name)) div.classList.add('claimed');
+        const img = document.createElement("img");
+        img.src = gift.img;
 
-    const img = document.createElement('img');
-    img.src = g.img;
+        const btn = document.createElement("button");
+        const isClaimed = claimedGifts.includes(gift.name);
+        btn.innerHTML = `<img src="${isClaimed ? buttons.claimed : buttons.mine}" width="100">`;
+        if(!isClaimed) {
+          btn.onclick = () => window.open(formURL,"_blank");
+        }
 
-    const btn = document.createElement('img');
-    btn.src = mineButtonImg;
-    btn.className = 'mine-button';
-    btn.style.width = '80px';
-    btn.style.height = '35px';
-    btn.style.display = claimedGifts.includes(g.name) ? 'none' : 'block';
-    btn.onclick = () => window.open(formURL, '_blank');
-
-    div.appendChild(img);
-    div.appendChild(btn);
-    const p = document.createElement('p');
-    p.textContent = g.name;
-    div.appendChild(p);
-
-    container.appendChild(div);
-  });
-}
-
-// ==== INITIAL LOAD ==== //
-fetchClaimedGifts();
-setInterval(fetchClaimedGifts, 5000); // refresh every 5s
-</script>
-
+        giftDiv.appendChild(img);
+        giftDiv.appendChild(btn);
+        giftsDiv.appendChild(giftDiv);
+      });
+    }
+  </script>
 </body>
 </html>
