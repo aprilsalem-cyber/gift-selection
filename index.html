@@ -200,7 +200,7 @@ document.write(`
 <div class="card">
 <img src="${item[1]}">
 <h3>${item[0]}</h3>
-<button class="mine-btn" onclick="chooseGift(this,'${item[0]}',${unlimited})">MINE</button>
+<button class="mine-btn" data-name="${item[0]}" onclick="chooseGift(this,'${item[0]}',${unlimited})">MINE</button>
 ${unlimited ? '<div class="counter">0</div>' : ''}
 </div>
 `);
