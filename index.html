@@ -210,59 +210,78 @@ document.write(`</div></div>`);
 }
 </script>
 <script type="module">
-  // Import Firebase modules
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-  // Your new Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyDEdTJpJHN80Zbp6aw-yQpQpRyOtoZ4PM4",
-    authDomain: "gift-selection-fa5a1.firebaseapp.com",
-    databaseURL: "https://gift-selection-fa5a1-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "gift-selection-fa5a1",
-    storageBucket: "gift-selection-fa5a1.firebasestorage.app",
-    messagingSenderId: "922467707552",
-    appId: "1:922467707552:web:167b3196abc96a70aa37c5",
-    measurementId: "G-GS0QPM61QD"
-  };
+// 🔹 Your existing Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyDEdTJpJHN80Zbp6aw-yQpQpRyOtoZ4PM4",
+  authDomain: "gift-selection-fa5a1.firebaseapp.com",
+  databaseURL: "https://gift-selection-fa5a1-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "gift-selection-fa5a1",
+  storageBucket: "gift-selection-fa5a1.firebasestorage.app",
+  messagingSenderId: "922467707552",
+  appId: "1:922467707552:web:167b3196abc96a70aa37c5",
+  measurementId: "G-GS0QPM61QD"
+};
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+// 🔹 Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-  // UPDATED chooseGift function
-  window.chooseGift = function(button, name, unlimited){
-    const giftRef = ref(db, "gifts/" + name);
+// 🔹 Function to claim gifts
+window.chooseGift = function(button, name, unlimited){
+  const giftRef = ref(db, "gifts/" + name);
 
-    if(unlimited){
-      onValue(giftRef, (snapshot)=>{
-        let current = snapshot.val() || 0;
-        set(giftRef, current + 1);
-      }, {onlyOnce:true});
-    } else {
-      set(giftRef, true);
+  if(unlimited){
+    // increase counter for unlimited gifts
+    onValue(giftRef, snapshot => {
+      let current = snapshot.val() || 0;
+      set(giftRef, current + 1);
+    }, {onlyOnce:true});
+
+    // update counter under the button immediately
+    const counterDiv = button.nextElementSibling;
+    if(counterDiv && counterDiv.classList.contains("counter")){
+      counterDiv.textContent = (parseInt(counterDiv.textContent) || 0) + 1;
     }
-  };
 
-  // REAL-TIME LISTENER
+  } else {
+    // mark single gifts as claimed
+    set(giftRef, true);
+    button.classList.add("disabled");
+    button.disabled = true;
+  }
+};
+
+// 🔹 Real-time listener for all buttons
+function attachListener(){
   const giftsRef = ref(db, "gifts");
-
-  onValue(giftsRef, (snapshot) => {
+  onValue(giftsRef, snapshot => {
     const data = snapshot.val();
     if(!data) return;
 
     document.querySelectorAll(".mine-btn").forEach(btn => {
       const name = btn.getAttribute("data-name");
+      const val = data[name];
 
-      if(data[name] === true){
+      if(val === true){
+        // limited gift claimed
         btn.classList.add("disabled");
-        btn.disabled = true; // prevent clicking
-      } else {
-        btn.classList.remove("disabled");
-        btn.disabled = false;
+        btn.disabled = true;
+      } else if(typeof val === "number"){
+        // unlimited gift: update counter
+        const counterDiv = btn.nextElementSibling;
+        if(counterDiv && counterDiv.classList.contains("counter")){
+          counterDiv.textContent = val;
+        }
       }
     });
   });
+}
+
+// 🔹 Run listener after page loads
+window.addEventListener("load", attachListener);
 </script>
 </body>
 </html>
