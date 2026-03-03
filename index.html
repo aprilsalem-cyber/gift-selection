@@ -213,7 +213,7 @@ document.write(`</div></div>`);
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-// 🔹 Your existing Firebase config
+// 🔹 Your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDEdTJpJHN80Zbp6aw-yQpQpRyOtoZ4PM4",
   authDomain: "gift-selection-fa5a1.firebaseapp.com",
@@ -229,8 +229,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// 🔹 Function to claim gifts
-window.chooseGift = function(button, name, unlimited){
+// 🔹 Choose gift function with nickname + confirm + thank you popup
+window.chooseGift = async function(button, name, unlimited){
+  // Ask for nickname
+  let nickname = prompt(`Hi! What's your nickname?`);
+  if(!nickname) return; // cancelled
+
+  // Confirm gift
+  let confirmGift = confirm(`Are you sure you want "${name}" as your gift, ${nickname}?`);
+  if(!confirmGift) return; // cancelled
+
   const giftRef = ref(db, "gifts/" + name);
 
   if(unlimited){
@@ -240,23 +248,28 @@ window.chooseGift = function(button, name, unlimited){
       set(giftRef, current + 1);
     }, {onlyOnce:true});
 
-    // update counter under the button immediately
+    // update counter under button immediately
     const counterDiv = button.nextElementSibling;
     if(counterDiv && counterDiv.classList.contains("counter")){
       counterDiv.textContent = (parseInt(counterDiv.textContent) || 0) + 1;
     }
 
+    alert(`Thank you ${nickname} for choosing "${name}"!`);
+
   } else {
-    // mark single gifts as claimed
+    // single claim gift
     set(giftRef, true);
     button.classList.add("disabled");
     button.disabled = true;
+
+    alert(`Thank you ${nickname}! You claimed "${name}"!`);
   }
 };
 
 // 🔹 Real-time listener for all buttons
 function attachListener(){
   const giftsRef = ref(db, "gifts");
+
   onValue(giftsRef, snapshot => {
     const data = snapshot.val();
     if(!data) return;
@@ -266,7 +279,7 @@ function attachListener(){
       const val = data[name];
 
       if(val === true){
-        // limited gift claimed
+        // single claim gift
         btn.classList.add("disabled");
         btn.disabled = true;
       } else if(typeof val === "number"){
@@ -280,7 +293,6 @@ function attachListener(){
   });
 }
 
-// 🔹 Run listener after page loads
 window.addEventListener("load", attachListener);
 </script>
 </body>
