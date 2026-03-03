@@ -210,32 +210,55 @@ document.write(`</div></div>`);
 }
 </script>
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-  import { getDatabase, ref, set, onValue }
-  from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getDatabase, ref, set, onValue }
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "YOUR_KEY",
-    authDomain: "YOUR_DOMAIN",
-    databaseURL: "YOUR_DATABASE_URL",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_BUCKET",
-    messagingSenderId: "YOUR_ID",
-    appId: "YOUR_APP_ID"
-  };
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_DOMAIN",
+  databaseURL: "YOUR_DATABASE_URL",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_BUCKET",
+  messagingSenderId: "YOUR_ID",
+  appId: "YOUR_APP_ID"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-  // Example reference
-  const giftRef = ref(db, "gifts/sampleGift");
+window.chooseGift = function(button,name,unlimited){
 
-  onValue(giftRef, (snapshot) => {
-    if (snapshot.val() === true) {
-      console.log("Gift claimed!");
+  const giftRef = ref(db, "gifts/" + name);
+
+  if(unlimited){
+    // increase counter
+    onValue(giftRef, (snapshot)=>{
+      let current = snapshot.val() || 0;
+      set(giftRef, current + 1);
+    }, {onlyOnce:true});
+  } else {
+    // claim once only
+    set(giftRef, true);
+  }
+};
+
+// 🔥 REALTIME LISTENER (this makes it sync for everyone)
+const giftsRef = ref(db, "gifts");
+
+onValue(giftsRef, (snapshot)=>{
+  const data = snapshot.val();
+  if(!data) return;
+
+  document.querySelectorAll(".mine-btn").forEach(btn=>{
+    const name = btn.getAttribute("data-name");
+
+    if(data[name] === true){
+      btn.classList.add("disabled");
     }
   });
 
+});
 </script>
 </body>
 </html>
