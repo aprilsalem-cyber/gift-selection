@@ -7,93 +7,108 @@
 <style>
 body{
 margin:0;
-font-family: 'Georgia', serif;
+font-family:'Georgia', serif;
 background-image:url('https://static.vecteezy.com/system/resources/previews/003/026/032/large_2x/bright-reflection-soft-color-background-free-photo.jpg');
 background-size:cover;
 background-attachment:fixed;
 text-align:center;
 }
 
-body::after{
-content:"✨ ✨ ✨ ✨ ✨ ✨ ✨ ✨ ✨ ✨";
-position:fixed;
-width:100%;
-top:0;
-left:0;
-animation:glitter 6s linear infinite;
-opacity:0.4;
-font-size:20px;
-}
-@keyframes glitter{
-0%{transform:translateY(-100%)}
-100%{transform:translateY(100vh)}
-}
-
 h1{
 font-size:50px;
 color:#b76e79;
 margin-top:30px;
+letter-spacing:2px;
+}
+
+.tabs{
+margin:20px;
 }
 
 .tabs button{
 padding:12px 25px;
 margin:5px;
 border:none;
-border-radius:25px;
+border-radius:30px;
 font-weight:bold;
 cursor:pointer;
 background:white;
 box-shadow:0 4px 10px rgba(0,0,0,0.2);
+transition:0.3s;
 }
-.tabs button:hover{background:#f8d7da;}
 
-.section{padding:50px 20px;}
+.tabs button:hover{
+background:#f8d7da;
+transform:translateY(-3px);
+}
+
+.section{
+padding:50px 20px;
+}
+
 .items{
 display:flex;
 flex-wrap:wrap;
 justify-content:center;
-gap:25px;
+gap:30px;
 }
 
 .card{
 background:white;
-width:230px;
+width:240px;
 padding:15px;
 border-radius:20px;
-box-shadow:0 6px 15px rgba(0,0,0,0.2);
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+transition:0.4s ease;
+cursor:pointer;
+}
+
+.card:hover{
+transform:translateY(-12px);
+box-shadow:0 15px 30px rgba(0,0,0,0.25);
 }
 
 .card img{
 width:100%;
-height:160px;
+height:180px;
 object-fit:cover;
 border-radius:15px;
 }
 
-.mine-btn{
-background:none;
-border:none;
-cursor:pointer;
+.card p{
+font-weight:bold;
 margin-top:10px;
+color:#444;
 }
 
-.mine-btn img{width:120px;}
+.mine-btn{
+margin-top:12px;
+padding:10px 20px;
+border:none;
+border-radius:25px;
+background:#ff69b4;
+color:white;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.mine-btn:hover{
+background:#e754a6;
+transform:scale(1.05);
+}
+
 .mine-btn.disabled{
-opacity:0.4;
+background:gray;
 pointer-events:none;
+opacity:0.6;
 }
 
 .counter{
+margin-top:8px;
 font-weight:bold;
 color:#b76e79;
 }
-
-.flower{
-position:fixed;
-font-size:40px;
-}
-.left{left:10px; top:100px;}
-.right{right:10px; top:200px;}
 </style>
 
 <script>
@@ -123,10 +138,7 @@ alert("Thank you, " + nickname + " 💖");
 </head>
 <body>
 
-<div class="flower left">🌸</div>
-<div class="flower right">🌺</div>
-
-<h1>💍 WEDDING GIFTS 💍</h1>
+<h1>WEDDING GIFTS</h1>
 
 <div class="tabs">
 <button onclick="scrollToSection('appliances')">APPLIANCES</button>
@@ -137,10 +149,8 @@ alert("Thank you, " + nickname + " 💖");
 
 <!-- APPLIANCES -->
 <div class="section" id="appliances">
-<h2>✨ APPLIANCES ✨</h2>
+<h2>APPLIANCES</h2>
 <div class="items">
-
-<!-- Appliances List -->
 <script>
 let appliances = [
 ["Rice Cooker","https://www.haegergroup.com/wp-content/uploads/RC-18L.001A_1-1.jpg"],
@@ -152,25 +162,21 @@ let appliances = [
 ["REF","https://www.smappliance.com/cdn/shop/products/Fujidenzo-RDD35TLeft-10163302_800x.jpg?v=1619154244"]
 ];
 
-document.write(appliances.map(item => `
+document.write(appliances.map(item=>`
 <div class="card">
 <img src="${item[1]}">
 <p>${item[0]}</p>
-<button class="mine-btn" onclick="chooseGift(this,'${item[0]}')">
-<img src="https://png.pngtree.com/png-clipart/20241216/original/pngtree-mine-red-button-png-image_17922819.png">
-</button>
+<button class="mine-btn" onclick="chooseGift(this,'${item[0]}')">MINE</button>
 </div>
 `).join(""));
 </script>
-
 </div>
 </div>
 
-<!-- KITCHEN ESSENTIALS -->
+<!-- KITCHEN -->
 <div class="section" id="kitchen">
-<h2>🍽️ KITCHEN ESSENTIALS 🍽️</h2>
+<h2>KITCHEN ESSENTIALS</h2>
 <div class="items">
-
 <script>
 let kitchen = [
 ["Plates","https://m.media-amazon.com/images/I/71K6TzFzn4L._AC_SL1000__.jpg"],
@@ -186,25 +192,21 @@ let kitchen = [
 ["Coffee / Tea Set","https://cdn20.pamono.com/p/g/1/8/1816587_57j2w408bx/antique-french-porcelain-coffee-tea-set-1865-set-of-13-1.jpg"]
 ];
 
-document.write(kitchen.map(item => `
+document.write(kitchen.map(item=>`
 <div class="card">
 <img src="${item[1]}">
 <p>${item[0]}</p>
-<button class="mine-btn" onclick="chooseGift(this,'${item[0]}')">
-<img src="https://png.pngtree.com/png-clipart/20241216/original/pngtree-mine-red-button-png-image_17922819.png">
-</button>
+<button class="mine-btn" onclick="chooseGift(this,'${item[0]}')">MINE</button>
 </div>
 `).join(""));
 </script>
-
 </div>
 </div>
 
 <!-- HOME & LIVING -->
 <div class="section" id="home">
-<h2>🏠 HOME & LIVING 🏠</h2>
+<h2>HOME & LIVING</h2>
 <div class="items">
-
 <script>
 let home = [
 ["Throw Pillow","https://smhome.ph/cdn/shop/files/TEXTURED_20_28RECTANGLES_29_20THROW_20PILLOW_20GREY_20-_2010434835-2.jpg?v=1771041144"],
@@ -219,25 +221,21 @@ let home = [
 ["Wallet","https://img.lazcdn.com/g/p/0a31959509b4bfe40bbd2ddc7ce4a80d.jpg_720x720q80.jpg"]
 ];
 
-document.write(home.map(item => `
+document.write(home.map(item=>`
 <div class="card">
 <img src="${item[1]}">
 <p>${item[0]}</p>
-<button class="mine-btn" onclick="chooseGift(this,'${item[0]}')">
-<img src="https://png.pngtree.com/png-clipart/20241216/original/pngtree-mine-red-button-png-image_17922819.png">
-</button>
+<button class="mine-btn" onclick="chooseGift(this,'${item[0]}')">MINE</button>
 </div>
 `).join(""));
 </script>
-
 </div>
 </div>
 
 <!-- OTHERS -->
 <div class="section" id="others">
-<h2>🌷 OTHERS 🌷</h2>
+<h2>OTHERS</h2>
 <div class="items">
-
 <script>
 let others = [
 ["Goods","https://katanamrp.com/wp-content/uploads/2022/11/consumer-goods-min.jpg"],
@@ -245,18 +243,15 @@ let others = [
 ["Gift Card / Voucher","https://d3pyarv4eotqu4.cloudfront.net/clicktopr/images/product/WALL_CALENDAR_GIFT_VOUCHER_3_5X2_07245702202401.jpg"]
 ];
 
-document.write(others.map(item => `
+document.write(others.map(item=>`
 <div class="card">
 <img src="${item[1]}">
 <p>${item[0]}</p>
-<button class="mine-btn" onclick="chooseGift(this,'${item[0]}',true)">
-<img src="https://png.pngtree.com/png-clipart/20241216/original/pngtree-mine-red-button-png-image_17922819.png">
-</button>
+<button class="mine-btn" onclick="chooseGift(this,'${item[0]}',true)">MINE</button>
 <p class="counter">0</p>
 </div>
 `).join(""));
 </script>
-
 </div>
 </div>
 
