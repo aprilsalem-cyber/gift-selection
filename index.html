@@ -226,7 +226,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Updated chooseGift function
+// UPDATED chooseGift function
 window.chooseGift = function(button, name, unlimited){
   const giftRef = ref(db, "gifts/" + name);
 
@@ -240,25 +240,30 @@ window.chooseGift = function(button, name, unlimited){
   }
 };
 
-// Real-time listener for all buttons
-const giftsRef = ref(db, "gifts");
+// 🔹 Function to attach the real-time listener AFTER all buttons exist
+function attachListener(){
+  const giftsRef = ref(db, "gifts");
 
-onValue(giftsRef, (snapshot) => {
-  const data = snapshot.val();
-  if(!data) return;
+  onValue(giftsRef, (snapshot) => {
+    const data = snapshot.val();
+    if(!data) return;
 
-  document.querySelectorAll(".mine-btn").forEach(btn => {
-    const name = btn.getAttribute("data-name");
+    document.querySelectorAll(".mine-btn").forEach(btn => {
+      const name = btn.getAttribute("data-name");
 
-    if(data[name] === true){
-      btn.classList.add("disabled");
-      btn.disabled = true; // prevent clicking
-    } else {
-      btn.classList.remove("disabled");
-      btn.disabled = false;
-    }
+      if(data[name] === true){
+        btn.classList.add("disabled");
+        btn.disabled = true;
+      } else {
+        btn.classList.remove("disabled");
+        btn.disabled = false;
+      }
+    });
   });
-});
+}
+
+// Call it after the page finishes loading
+window.addEventListener("load", attachListener);
 </script>
 </body>
 </html>
