@@ -210,38 +210,41 @@ document.write(`</div></div>`);
 }
 </script>
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+  // Import Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  databaseURL: "YOUR_DATABASE_URL",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_BUCKET",
-  messagingSenderId: "YOUR_ID",
-  appId: "YOUR_APP_ID"
-};
+  // Your new Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyDEdTJpJHN80Zbp6aw-yQpQpRyOtoZ4PM4",
+    authDomain: "gift-selection-fa5a1.firebaseapp.com",
+    databaseURL: "https://gift-selection-fa5a1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "gift-selection-fa5a1",
+    storageBucket: "gift-selection-fa5a1.firebasestorage.app",
+    messagingSenderId: "922467707552",
+    appId: "1:922467707552:web:167b3196abc96a70aa37c5",
+    measurementId: "G-GS0QPM61QD"
+  };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-// UPDATED chooseGift function
-window.chooseGift = function(button, name, unlimited){
-  const giftRef = ref(db, "gifts/" + name);
+  // UPDATED chooseGift function
+  window.chooseGift = function(button, name, unlimited){
+    const giftRef = ref(db, "gifts/" + name);
 
-  if(unlimited){
-    onValue(giftRef, (snapshot)=>{
-      let current = snapshot.val() || 0;
-      set(giftRef, current + 1);
-    }, {onlyOnce:true});
-  } else {
-    set(giftRef, true);
-  }
-};
+    if(unlimited){
+      onValue(giftRef, (snapshot)=>{
+        let current = snapshot.val() || 0;
+        set(giftRef, current + 1);
+      }, {onlyOnce:true});
+    } else {
+      set(giftRef, true);
+    }
+  };
 
-// 🔹 Function to attach the real-time listener AFTER all buttons exist
-function attachListener(){
+  // REAL-TIME LISTENER
   const giftsRef = ref(db, "gifts");
 
   onValue(giftsRef, (snapshot) => {
@@ -253,17 +256,13 @@ function attachListener(){
 
       if(data[name] === true){
         btn.classList.add("disabled");
-        btn.disabled = true;
+        btn.disabled = true; // prevent clicking
       } else {
         btn.classList.remove("disabled");
         btn.disabled = false;
       }
     });
   });
-}
-
-// Call it after the page finishes loading
-window.addEventListener("load", attachListener);
 </script>
 </body>
 </html>
