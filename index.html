@@ -209,6 +209,33 @@ ${unlimited ? '<div class="counter">0</div>' : ''}
 document.write(`</div></div>`);
 }
 </script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue }
+  from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
+  const firebaseConfig = {
+    apiKey: "YOUR_KEY",
+    authDomain: "YOUR_DOMAIN",
+    databaseURL: "YOUR_DATABASE_URL",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_BUCKET",
+    messagingSenderId: "YOUR_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // Example reference
+  const giftRef = ref(db, "gifts/sampleGift");
+
+  onValue(giftRef, (snapshot) => {
+    if (snapshot.val() === true) {
+      console.log("Gift claimed!");
+    }
+  });
+
+</script>
 </body>
 </html>
