@@ -211,8 +211,7 @@ document.write(`</div></div>`);
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getDatabase, ref, set, onValue }
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "YOUR_KEY",
@@ -227,37 +226,38 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-window.chooseGift = function(button,name,unlimited){
-
+// Updated chooseGift function
+window.chooseGift = function(button, name, unlimited){
   const giftRef = ref(db, "gifts/" + name);
 
   if(unlimited){
-    // increase counter
     onValue(giftRef, (snapshot)=>{
       let current = snapshot.val() || 0;
       set(giftRef, current + 1);
     }, {onlyOnce:true});
   } else {
-    // claim once only
     set(giftRef, true);
   }
 };
 
-// 🔥 REALTIME LISTENER (this makes it sync for everyone)
+// Real-time listener for all buttons
 const giftsRef = ref(db, "gifts");
 
-onValue(giftsRef, (snapshot)=>{
+onValue(giftsRef, (snapshot) => {
   const data = snapshot.val();
   if(!data) return;
 
-  document.querySelectorAll(".mine-btn").forEach(btn=>{
+  document.querySelectorAll(".mine-btn").forEach(btn => {
     const name = btn.getAttribute("data-name");
 
     if(data[name] === true){
       btn.classList.add("disabled");
+      btn.disabled = true; // prevent clicking
+    } else {
+      btn.classList.remove("disabled");
+      btn.disabled = false;
     }
   });
-
 });
 </script>
 </body>
